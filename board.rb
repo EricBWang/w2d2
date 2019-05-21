@@ -1,10 +1,12 @@
 require_relative "piece.rb"
+require_relative "null_piece.rb"
 class Board
 
-  attr_accessor :board
+  attr_accessor :rows
   
   def initialize
-    @board = Array.new(8) {Array.new(8, [])}
+    @rows = Array.new(8) {Array.new(8, [])}
+    @sentinel = NullPiece.new
     render 
 
   end
@@ -13,28 +15,30 @@ class Board
     (0...8).each do |row|
       (0...8).each do |column|
         if row > 1 && row < 6
-          board[row][column] = nil
+          rows[row][column] = NullPiece.new
         else 
-          board[row][column] = Piece.new 
+          rows[row][column] = Piece.new 
         end
       end
     end
   end
 
-  def move_piece(start_pos, end_pos)
+  def move_piece(color, start_pos, end_pos)
     start_row, start_col = start_pos
     end_row, end_col = end_pos
 
-    if board[start_row][start_col].nil? || board[end_row][end_col]
+    if rows[start_row][start_col].nil? || rows[end_row][end_col]
       raise "invalid move/ nonexistent piece"
     else
-      board[start_row][start_col], board[end_row][end_col] = nil, board[start_row][start_col]
+      rows[start_row][start_col], board[end_row][end_col] = nil, rows[start_row][start_col]
     end
-
 
   end
 
-
-
+  def valid_pos?(pos)
+    row, col = pos
+    return true if row >= 0 && row <= 7 && col >= 0 && col <= 7 
+    return false
+  end
 
 end
