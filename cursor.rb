@@ -85,6 +85,7 @@ class Cursor
       return nil 
     when :ctrl_c 
       Process.exit(0)
+    end
   end
 
   def update_pos(diff)
@@ -93,4 +94,5 @@ class Cursor
       @cursor_pos = new_pos
     end
   end
+
 end
